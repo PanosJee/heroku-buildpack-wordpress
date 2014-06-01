@@ -84,10 +84,9 @@ fi
 # New Relic
 cd ${BUILD_DIR}
 if [ ! -d ./vendor/newrelic ]; then
-  echo "-----> Installing New Relic v${NEWRELIC_VERSION}"
+  echo "-----> Installing New Relic v${NEWRELIC_VERSION} from ${NEWRELIC_URL}"
   mkdir -p ./vendor/newrelic && cd ./vendor/newrelic
   curl --silent --max-time 60 --location $NEWRELIC_URL | tar xz
-  
 fi
 
 popd > /dev/null
