@@ -36,6 +36,10 @@ if [ -z "$WORDPRESS_VERSION" ]; then
   WORDPRESS_VERSION=3.9.1
 fi
 
+if [ -z "$NEWRELIC_VERSION" ]; then
+  WORDPRESS_VERSION=4.9.0.54
+fi
+
 if [ -z "$S3_BUCKET" ]; then
   S3_BUCKET=heroku-buildpack-wordpress
 fi
@@ -46,6 +50,7 @@ fi
 NGINX_URL="https://s3.amazonaws.com/${S3_BUCKET}/nginx-${NGINX_VERSION}-heroku.tar.gz"
 PHP_URL="https://s3.amazonaws.com/${S3_BUCKET}/php-${PHP_VERSION}-with-fpm-heroku.tar.gz"
 WORDPRESS_URL="http://wordpress.org/wordpress-${WORDPRESS_VERSION}.tar.gz"
+NEWRELIC_URL="https://download.newrelic.com/php_agent/release/newrelic-php5-${NEWRELIC_VERSION}-linux.tar.gz"
 #
 
 function indent() {
@@ -76,18 +81,16 @@ if [ ! -d ./vendor/php ]; then
   curl --silent --max-time 60 --location $PHP_URL | tar xz
 fi
 
-
-# NewRelic
+# New Relic
 cd ${BUILD_DIR}
 if [ ! -d ./vendor/newrelic ]; then
-  echo "-----> Installing NewRelic (Hard coded)"
+  echo "-----> Installing New Relic v${NEWRELIC_VERSION}"
   mkdir -p ./vendor/newrelic && cd ./vendor/newrelic
-  curl --silent --max-time 60 --location https://download.newrelic.com/php_agent/release/newrelic-php5-4.9.0.54-linux.tar.gz | tar xz
-  mkdir -p ./app/newrelic
-  mkdir -p ./app/newrelic/bin
-  cp -f newrelic-php5-4.9.0.54-linux/daemon/newrelic-daemon.x64 /app/newrelic/bin/newrelic-daemon
+  curl --silent --max-time 60 --location $NEWRELIC_URL | tar xz
+  
 fi
 
+popd > /dev/null
 
 # Create the empty log files
 cd $SCRIPT_DIR
