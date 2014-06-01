@@ -37,7 +37,7 @@ if [ -z "$WORDPRESS_VERSION" ]; then
 fi
 
 if [ -z "$NEWRELIC_VERSION" ]; then
-  WORDPRESS_VERSION=4.9.0.54
+  NEWRELIC_VERSION=4.9.0.54
 fi
 
 if [ -z "$S3_BUCKET" ]; then
