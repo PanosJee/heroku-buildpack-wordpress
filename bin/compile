@@ -76,6 +76,20 @@ if [ ! -d ./vendor/php ]; then
   curl --silent --max-time 60 --location $PHP_URL | tar xz
 fi
 
+
+# NewRelic
+if [ ! -f "$NEWRELIC_TGZ_FILE" ] || check_md5 "$NEWRELIC_TGZ_FILE"; then
+    echo "-----> Bundling New Relic v${NEWRELIC_VERSION}"
+    $CURL_CMD "https://$BUILDPACK_S3_BUCKET.s3.amazonaws.com/$NEWRELIC_TGZ_FILE"
+else
+    echo "-----> Using cached New Relic v${NEWRELIC_VERSION}"
+fi
+tar xf $NEWRELIC_TGZ_FILE -C $BUILD_DIR
+
+popd > /dev/null
+
+pushd $BUILD_DIR > /dev/null
+
 # Wordpress
 echo "-----> Installing Wordpress v${WORDPRESS_VERSION}"
 cd ${BUILD_DIR}
