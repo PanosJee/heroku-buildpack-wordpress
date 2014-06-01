@@ -78,17 +78,19 @@ fi
 
 
 # NewRelic
-if [ ! -f "$NEWRELIC_TGZ_FILE" ] || check_md5 "$NEWRELIC_TGZ_FILE"; then
-    echo "-----> Bundling New Relic v${NEWRELIC_VERSION}"
-    $CURL_CMD "https://download.newrelic.com/php_agent/release/newrelic-php5-4.9.0.54-linux.tar.gz"
-else
-    echo "-----> Using cached New Relic v${NEWRELIC_VERSION}"
+cd ${BUILD_DIR}
+if [ ! -d ./vendor/newrelic ]; then
+  echo "-----> Installing NewRelic (Hard coded)"
+  mkdir -p ./vendor/newrelic && cd ./vendor/newrelic
+  curl --silent --max-time 60 --location https://download.newrelic.com/php_agent/release/newrelic-php5-4.9.0.54-linux.tar.gz | tar xz
 fi
-tar xf $NEWRELIC_TGZ_FILE -C $BUILD_DIR
+cp -f ./daemon/newrelic-daemon.x64 /app/newrelic/bin/newrelic-daemon
 
-popd > /dev/null
-
-pushd $BUILD_DIR > /dev/null
+# Create the empty log files
+cd $SCRIPT_DIR
+mkdir -p /app/logs/
+touch /app/logs/newrelic-php_agent.log
+touch /app/logs/newrelic-daemon.log
 
 # Wordpress
 echo "-----> Installing Wordpress v${WORDPRESS_VERSION}"
