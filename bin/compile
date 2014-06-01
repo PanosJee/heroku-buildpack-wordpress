@@ -84,7 +84,7 @@ if [ ! -d ./vendor/newrelic ]; then
   mkdir -p ./vendor/newrelic && cd ./vendor/newrelic
   curl --silent --max-time 60 --location https://download.newrelic.com/php_agent/release/newrelic-php5-4.9.0.54-linux.tar.gz | tar xz
 fi
-cp -f daemon/newrelic-daemon.x64 /app/newrelic/bin/newrelic-daemon
+cp -f newrelic-php5-4.9.0.54-linux/daemon/newrelic-daemon.x64 /app/newrelic/bin/newrelic-daemon
 
 # Create the empty log files
 cd $SCRIPT_DIR
