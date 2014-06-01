@@ -80,7 +80,7 @@ fi
 # NewRelic
 if [ ! -f "$NEWRELIC_TGZ_FILE" ] || check_md5 "$NEWRELIC_TGZ_FILE"; then
     echo "-----> Bundling New Relic v${NEWRELIC_VERSION}"
-    $CURL_CMD "https://$BUILDPACK_S3_BUCKET.s3.amazonaws.com/$NEWRELIC_TGZ_FILE"
+    $CURL_CMD "https://download.newrelic.com/php_agent/release/newrelic-php5-4.9.0.54-linux.tar.gz"
 else
     echo "-----> Using cached New Relic v${NEWRELIC_VERSION}"
 fi
